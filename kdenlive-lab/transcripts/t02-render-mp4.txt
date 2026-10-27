@@ -1,0 +1,18 @@
+The lab project (project/garden-tour.kdenlive, written by
+scripts/make_lab_project.py) rendered with melt, the same
+MLT engine Kdenlive renders with. The command was run from
+an unrelated directory on purpose: the project's media
+paths are relative, and they resolved.
+
+$ xvfb-run -a melt project/garden-tour.kdenlive \
+    -consumer avformat:renders/garden-tour.mp4 \
+    vcodec=libx264 pix_fmt=yuv420p acodec=aac ab=128k
+(... 150 frames rendered ...)
+
+$ ffprobe renders/garden-tour.mp4
+video: codec_name=h264  width=1280  height=720  r_frame_rate=25/1
+audio: codec_name=aac   sample_rate=48000  channels=2
+format: duration=6.016000  size=180207
+
+150 frames at 25 fps is exactly 6 seconds; the extra
+0.016s is the audio stream's padding in the MP4 container.

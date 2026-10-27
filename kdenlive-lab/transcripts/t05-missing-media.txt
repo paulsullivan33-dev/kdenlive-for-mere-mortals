@@ -1,0 +1,21 @@
+What happens when a clip's file is not where the project
+says it is. A copy of the project was made with one path
+pointed at a file that does not exist:
+
+$ sed 's#clip-b-roses.mp4#clip-b-roses-MISSING.mp4#' \
+    garden-tour.kdenlive > garden-tour-broken.kdenlive
+$ xvfb-run -a melt project/garden-tour-broken.kdenlive \
+    -consumer avformat:renders/broken.mp4 ...
+
+The render does NOT stop. It finishes, and the missing
+clip's three seconds come out as a grey checkerboard --
+MLT's placeholder for a producer it cannot read. Frame
+100 of the broken render is that checkerboard, wall to
+wall (mean luma 152.0; checked by eye as well).
+
+Lesson, and it is chapter 12's whole point: a project
+file holds paths and instructions, not the media itself.
+Move the project without its media and the film quietly
+fills with checkerboard. In the Kdenlive window a missing
+clip is flagged when the project opens; a headless render
+says nothing at all, which is worse.

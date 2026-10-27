@@ -1,0 +1,24 @@
+Synthetic media for the lab project, made with ffmpeg.
+Two labelled colour clips stand in for two shots of a
+fictional garden tour; a sine tone stands in for sound.
+
+$ ffmpeg -f lavfi -i color=c=0x2e7d32:s=1280x720:r=25:d=3 \
+    -vf "drawtext=...:text='Garden gate':..." clip-a-gate.mp4
+$ ffmpeg -f lavfi -i color=c=0xb5533c:s=1280x720:r=25:d=3 \
+    -vf "drawtext=...:text='The rose bed':..." clip-b-roses.mp4
+$ ffmpeg -f lavfi -i sine=frequency=440:duration=6 tone.wav
+$ ffmpeg -f lavfi -i testsrc2=s=3840x2160:r=25:d=2 big-4k.mp4
+
+$ ffprobe clip-a-gate.mp4
+codec_name=h264  width=1280  height=720  r_frame_rate=25/1
+duration=3.000000
+
+$ ffprobe clip-b-roses.mp4
+codec_name=h264  width=1280  height=720  r_frame_rate=25/1
+duration=3.000000
+
+$ ffprobe tone.wav
+codec_name=pcm_s16le  duration=6.000000
+
+$ ls -l big-4k.mp4
+-rw-rw---- 1 4329480 big-4k.mp4

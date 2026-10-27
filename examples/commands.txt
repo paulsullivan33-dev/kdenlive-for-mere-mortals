@@ -1,0 +1,63 @@
+The lab's commands, in the order they were run
+==============================================
+
+Versions (t00)
+
+  kdenlive --version                 -> kdenlive 23.08.5
+  melt -version                      -> melt 7.22.0
+  ffmpeg -version                    -> ffmpeg 8.1.2
+  (both packages installed with apt: kdenlive, melt)
+
+Media (t01) -- full drawtext options trimmed in the
+transcript; the generated files are in kdenlive-lab/media/
+
+  ffmpeg -f lavfi -i color=c=0x2e7d32:s=1280x720:r=25:d=3 \
+    -vf drawtext=... clip-a-gate.mp4
+  ffmpeg -f lavfi -i color=c=0xb5533c:s=1280x720:r=25:d=3 \
+    -vf drawtext=... clip-b-roses.mp4
+  ffmpeg -f lavfi -i sine=frequency=440:duration=6 tone.wav
+  ffmpeg -f lavfi -i testsrc2=s=3840x2160:r=25:d=2 big-4k.mp4
+
+Project (t02)
+
+  python3 scripts/make_lab_project.py
+    writes project/garden-tour.kdenlive and
+    project/garden-title.kdenlivetitle
+
+Renders (t02, t04)
+
+  xvfb-run -a melt project/garden-tour.kdenlive \
+    -consumer avformat:renders/garden-tour.mp4 \
+    vcodec=libx264 pix_fmt=yuv420p acodec=aac ab=128k
+  xvfb-run -a melt project/garden-tour.kdenlive \
+    -consumer avformat:renders/garden-tour.webm \
+    vcodec=libvpx-vp9 pix_fmt=yuv420p acodec=libopus ab=128k
+
+  NOTE: the first render ran without xvfb-run and the
+  title came out as the word INVALID -- the MLT Qt
+  module needs an X environment (t03). Under xvfb-run
+  the title renders correctly.
+
+Checks (t02, t03)
+
+  ffprobe renders/garden-tour.mp4
+  ffmpeg -i renders/garden-tour.mp4 \
+    -vf "select='eq(n\,30)'" -frames:v 1 frame-30.png
+  ffmpeg -i frame.png -vf signalstats,metadata=print \
+    -f null -                       (mean luma per frame)
+  ffmpeg -i renders/garden-tour.mp4 -t 0.4 start.wav
+  ffmpeg -i start.wav -af astats -f null -   (RMS level)
+
+Missing media (t05)
+
+  sed 's#clip-b-roses.mp4#clip-b-roses-MISSING.mp4#' \
+    garden-tour.kdenlive > garden-tour-broken.kdenlive
+  xvfb-run -a melt project/garden-tour-broken.kdenlive \
+    -consumer avformat:renders/broken.mp4 ...
+
+Proxy (t06)
+
+  ffmpeg -i media/big-4k.mp4 -vf scale=640:360 \
+    -c:v libx264 media/big-4k-proxy.mp4
+  time ffmpeg -i media/big-4k.mp4 -f null -
+  time ffmpeg -i media/big-4k-proxy.mp4 -f null -

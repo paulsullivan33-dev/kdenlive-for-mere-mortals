@@ -1,0 +1,11 @@
+<kdenlivetitle width="1280" height="720" out="49">
+ <item z-index="0" type="QGraphicsTextItem">
+  <position x="215" y="308">
+   <transform>1,0,0,0,1,0,0,0,1</transform>
+  </position>
+  <content font-color="255,255,255,255" font-outline-color="0,0,0,255" font-pixel-size="76" font-italic="0" font-underline="0" font-weight="50" font="DejaVu Sans" font-outline="2">A Short Garden Tour</content>
+ </item>
+ <startviewport rect="0,0,1280,720"/>
+ <endviewport rect="0,0,1280,720"/>
+ <background color="0,0,0,0"/>
+</kdenlivetitle>

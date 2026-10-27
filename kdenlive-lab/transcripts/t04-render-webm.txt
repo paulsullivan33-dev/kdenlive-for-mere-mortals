@@ -1,0 +1,17 @@
+The same project, rendered a second way: WebM.
+
+$ xvfb-run -a melt project/garden-tour.kdenlive \
+    -consumer avformat:renders/garden-tour.webm \
+    vcodec=libvpx-vp9 pix_fmt=yuv420p acodec=libopus ab=128k
+
+$ ffprobe renders/garden-tour.webm
+video: codec_name=vp9
+audio: codec_name=opus
+format: duration=6.008000  size=170578
+
+Same timeline, same 6 seconds. Only the container and
+codecs changed -- the choice chapter 11 walks through.
+
+Sizes side by side:
+  garden-tour.mp4    180207 bytes  (H.264 + AAC)
+  garden-tour.webm   170578 bytes  (VP9 + Opus)

@@ -1,0 +1,17 @@
+$ kdenlive --version
+kdenlive 23.08.5
+
+$ melt -version
+melt 7.22.0
+
+$ ffmpeg -version | head -1
+ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers
+
+$ apt-cache policy melt kdenlive | grep -A1 'melt:\|kdenlive:'
+melt:
+  Installed: 7.22.0-1build6
+kdenlive:
+  Installed: 4:23.08.5-0ubuntu4
+
+Machine: Ubuntu 24.04, 2 CPUs, 7.7 GB RAM, no display
+(a fake X server, xvfb, stands in where one is needed).

@@ -1,0 +1,32 @@
+Three checks on the rendered MP4.
+
+1) The fade from black (a brightness filter on track V1,
+   keyframes 0=0 to 24=1). Mean luma (YAVG) of stills:
+
+   frame 2    YAVG 19.7
+   frame 12   YAVG 45.8
+   frame 30   YAVG 90.7     <- fade finished at frame 24
+
+   Frame 30 was also read with eyes: the title
+   "A Short Garden Tour" sits over the green gate clip.
+
+2) The audio fade-in (a volume filter on track A1,
+   keyframes 0=-60dB to 24=0dB). RMS level:
+
+   seconds 0.0-0.4   -69.4 dB   (the fade's quiet start)
+   seconds 2.0-3.0   -24.1 dB   (full level)
+   the source tone alone measures -21.1 dB
+
+3) The trap this lab fell into first. Without a display,
+   the title clip rendered as a giant word INVALID: the
+   MLT Qt module (which draws Kdenlive titles) needs an
+   X11 environment --
+
+   $ melt /usr/share/kdenlive/titles/simple.kdenlivetitle ...
+   [mlt_producer] The MLT Qt module requires a X11 environment.
+   Please either run melt from an X session or use a fake X
+   server like xvfb: xvfb-run -a melt (...)
+
+   Re-rendering under xvfb-run made the title appear.
+   On a normal desktop this never arises: Kdenlive itself
+   is the display program. It bites only headless renders.

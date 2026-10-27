@@ -1,0 +1,23 @@
+Why proxies exist, measured on the lab's 4K clip
+(2 seconds of 3840x2160 test footage).
+
+A proxy at the size Kdenlive typically makes (640 wide):
+
+$ ffmpeg -i media/big-4k.mp4 -vf scale=640:360 \
+    -c:v libx264 media/big-4k-proxy.mp4
+
+$ ls -l media/big-4k.mp4 media/big-4k-proxy.mp4
+media/big-4k.mp4        4329480 bytes
+media/big-4k-proxy.mp4    50375 bytes     (86x smaller)
+
+Decode cost (ffmpeg reading every frame, nothing else):
+
+$ time ffmpeg -i media/big-4k.mp4 -f null -
+real  1.488s
+$ time ffmpeg -i media/big-4k-proxy.mp4 -f null -
+real  0.087s                              (about 17x less)
+
+An editor decodes footage constantly -- every scrub,
+every preview frame. The proxy is the same pictures at
+a fraction of the decoding price, which is the whole
+idea of chapter 13.
